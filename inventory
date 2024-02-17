@@ -1,0 +1,6 @@
+[docker_host]
+192.168.50.145
+
+[docker_host:vars]
+ansible_user=seb
+ansible_ssh_private_key_file=~/.ssh/key_kvm_ansible_test
