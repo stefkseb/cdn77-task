@@ -1,0 +1,15 @@
+---
+- name: Copy configuration files
+  copy:
+    src: file-server-nginx.conf
+    dest: /etc/nginx/conf.d/
+
+- name: Disable default site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted

@@ -1,0 +1,43 @@
+---
+- name: Create own docker network
+  docker_network:
+    name: my_network
+    ipam_config:
+      - subnet: "192.168.0.0/24"
+        gateway: "192.168.0.1"
+        iprange: "192.168.0.0/25"
+    state: present
+
+- name: Copy ssh key
+  copy:
+    src: containers_key.pub
+    dest: /srv/ssh_key.pub
+    mode: 0644
+
+- name: Build generic docker image
+  docker_image:
+    name: generic_img
+    source: build
+    build:
+      path: ./docker/
+      pull: true
+      dockerfile: ./Dockerfile
+    state: present
+
+- name: Create Prometheus container
+  docker_container:
+    name: "{{ item.name }}"
+    restart_policy: always
+    image: generic_img:latest
+    volumes:
+      - /srv/ssh_key.pub:/root/.ssh/authorized_keys
+    networks:
+      - name: my_network
+        ipv4_address: "{{ item.ip }}"
+    published_ports:
+      "{{ item.ports }}"
+    detach: true
+  with_items:
+    - {name: prometheus, ip: "192.168.0.2", ports: ["9090:9090", "2202:22/tcp"]}
+    - {name: nginx_webserver, ip: "192.168.0.3", ports: ["2203:22/tcp", "80:80"]}
+    - {name: nginx_rproxy, ip: "192.168.0.4", ports: ["2204:22/tcp"]}

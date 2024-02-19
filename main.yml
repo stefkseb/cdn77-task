@@ -1,6 +1,22 @@
 ---
-- hosts: docker_host
+- name: Prepare docker host for running containers
+  hosts: docker_host
   become: true
-
   roles:
-    - installDocker
+    - role: installDocker
+      tags: [install]
+
+    - role: createInfra
+      tags: [infra]
+
+- name: Install and configure nginx
+  hosts: nginx
+  become: true
+  roles:
+    - installNginx
+
+- name: Configure Nginx webserver
+  hosts: nginx_web
+  become: true
+  roles:
+    - configureNginxWebserver
