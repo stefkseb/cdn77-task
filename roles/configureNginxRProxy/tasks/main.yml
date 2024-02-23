@@ -1,0 +1,25 @@
+---
+- name: Copy configuration files
+  copy:
+    src: file-rproxy-nginx.conf
+    dest: /etc/nginx/conf.d/
+
+- name: Disable default site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Copy certificate
+  copy:
+    src: fileserver.local.pem
+    dest: /etc/nginx/
+
+- name: Copy private key
+  copy:
+    src: fileserver.local-key.pem
+    dest: /etc/nginx/
+
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted

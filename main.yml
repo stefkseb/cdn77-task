@@ -20,3 +20,9 @@
   become: true
   roles:
     - configureNginxWebserver
+
+- name: Configure Nginx webserver
+  hosts: nginx_rproxy
+  become: true
+  roles:
+    - configureNginxRProxy
