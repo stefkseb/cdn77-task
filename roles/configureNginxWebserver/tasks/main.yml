@@ -13,3 +13,10 @@
   service:
     name: nginx
     state: restarted
+
+- name: Start prometheus-nginx-exporter
+  service:
+      name: prometheus-nginx-exporter
+      state: started
+  ignore_errors: true
+  

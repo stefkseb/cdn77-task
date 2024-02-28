@@ -26,3 +26,10 @@
   become: true
   roles:
     - configureNginxRProxy
+
+- name: Install and configure prometheus
+  hosts: prometheus
+  become: true
+  roles:
+    - role: installAndConfigurePrometheus
+      tags: prom

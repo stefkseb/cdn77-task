@@ -1,0 +1,23 @@
+---
+- name: Update apt cache
+  apt:
+    cache_valid_time: 3600
+    update_cache: true
+
+- name: Install prometheus
+  apt:
+    pkg: prometheus
+    state: present
+
+- name: Copy prometheus.yml
+  copy:
+    src: prometheus.yml
+    dest: /etc/prometheus/prometheus.yml
+    mode: 0644
+  notify: restart_prometheus
+
+- name: Start Prometheus
+  service:
+      name: prometheus
+      state: started
+  ignore_errors: true

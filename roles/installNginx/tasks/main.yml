@@ -4,13 +4,21 @@
     cache_valid_time: 3600
     update_cache: true
 
-- name: Install nginx
+- name: Install nginx and exporters
   apt:
     pkg:
       - nginx
+      - prometheus-node-exporter
+      - prometheus-nginx-exporter
 
 - name: Start nginx
   service:
       name: nginx
+      state: started
+  ignore_errors: true
+
+- name: Start prometheus-node-exporter
+  service:
+      name: prometheus-node-exporter
       state: started
   ignore_errors: true
