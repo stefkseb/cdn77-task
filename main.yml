@@ -27,9 +27,16 @@
   roles:
     - configureNginxRProxy
 
-- name: Install and configure prometheus
+- name: Install and configure Prometheus
   hosts: prometheus
   become: true
   roles:
     - role: installAndConfigurePrometheus
       tags: prom
+
+- name: Install and configure Elasticsearch
+  hosts: elastic
+  become: true
+  roles:
+    - role: installElastic
+      tags: elk
