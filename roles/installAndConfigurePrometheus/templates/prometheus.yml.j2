@@ -26,4 +26,9 @@ scrape_configs:
 
   - job_name: nginx_servers
     static_configs:
-      - targets: ['192.168.0.3:9100', '192.168.0.4:9100', '192.168.0.3:9113', '192.168.0.4:9113']
+      - targets: [{% for host in groups['nginx'] %}'{{host}}:9100',{% endfor %}{% for host in groups['nginx'] %}'{{host}}:9113',{% endfor %}]
+
+  - job_name: elasticsearch
+    static_configs:
+      - targets: [{% for host in groups['elastic'] %}'{{host}}:9100',{% endfor %}{% for host in groups['elastic'] %}'{{host}}:9114',{% endfor %}]
+
