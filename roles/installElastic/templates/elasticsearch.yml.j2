@@ -14,13 +14,13 @@
 #
 # Use a descriptive name for your cluster:
 #
-#cluster.name: my-application
+cluster.name: es-cluster
 #
 # ------------------------------------ Node ------------------------------------
 #
 # Use a descriptive name for the node:
 #
-#node.name: node-1
+node.name: {{ inventory_hostname }}
 #
 # Add custom attributes to the node:
 #
@@ -53,7 +53,7 @@ path.logs: /var/log/elasticsearch
 # By default Elasticsearch is only accessible on localhost. Set a different
 # address here to expose this node on the network:
 #
-#network.host: 192.168.0.1
+network.host: {{ inventory_hostname }}
 #
 # By default Elasticsearch listens for HTTP traffic on the first free port it
 # finds starting at 9200. Set a specific HTTP port here:
@@ -67,11 +67,12 @@ path.logs: /var/log/elasticsearch
 # Pass an initial list of hosts to perform discovery when this node is started:
 # The default list of hosts is ["127.0.0.1", "[::1]"]
 #
-#discovery.seed_hosts: ["host1", "host2"]
+discovery.seed_hosts: ["192.168.0.5", "192.168.0.6", "192.168.0.7", "192.168.0.8", "192.168.0.9"]
 #
 # Bootstrap the cluster using an initial set of master-eligible nodes:
 #
-#cluster.initial_master_nodes: ["node-1", "node-2"]
+cluster.initial_master_nodes: ["192.168.0.5", "192.168.0.6", "192.168.0.7", "192.168.0.8", "192.168.0.9"]
+#
 #
 # For more information, consult the discovery and cluster formation module documentation.
 #
@@ -80,6 +81,7 @@ path.logs: /var/log/elasticsearch
 # Require explicit names when deleting indices:
 #
 #action.destructive_requires_name: true
+#
 #
 # ---------------------------------- Security ----------------------------------
 #

@@ -24,7 +24,10 @@
       dockerfile: ./Dockerfile
     state: present
 
-- name: Create all containers
+- name: Set vm.max_map_count
+  shell: sysctl -w vm.max_map_count=262144
+
+- name: Create containers
   docker_container:
     name: "{{ item.name }}"
     restart_policy: always
@@ -41,6 +44,26 @@
     - {name: prometheus, ip: "192.168.0.2", ports: ["9090:9090", "2202:22/tcp"]}
     - {name: nginx_webserver, ip: "192.168.0.3", ports: ["2203:22/tcp"]}
     - {name: nginx_rproxy, ip: "192.168.0.4", ports: ["2204:22/tcp", "80:80", "443:443"]}
-    - {name: es1, ip: "192.168.0.5", ports: []}
-    - {name: es2, ip: "192.168.0.6", ports: []}
-    - {name: es3, ip: "192.168.0.7", ports: []}
+
+- name: Create Elasticsearch containers
+  docker_container:
+    name: "{{ item.name }}"
+    restart_policy: always
+    image: generic_img:latest
+    volumes:
+      - /srv/ssh_key.pub:/root/.ssh/authorized_keys
+    networks:
+      - name: my_network
+        ipv4_address: "{{ item.ip }}"
+    published_ports:
+      "{{ item.ports }}"
+    detach: true
+    env:
+      ES_JAVA_OPTS: -Xms1024m -Xmx1024m
+    memory: 2G
+  with_items:
+    - {name: es1, ip: "192.168.0.5", ports: ["9205:9200"]}
+    - {name: es2, ip: "192.168.0.6", ports: ["9206:9200"]}
+    - {name: es3, ip: "192.168.0.7", ports: ["9207:9200"]}
+    - {name: es4, ip: "192.168.0.8", ports: ["9208:9200"]}
+    - {name: es5, ip: "192.168.0.9", ports: ["9209:9200"]}

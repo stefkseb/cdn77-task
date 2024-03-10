@@ -30,6 +30,12 @@
       - prometheus-elasticsearch-exporter
     update_cache: true
 
+- name: Configure Elastic with elasticsearch.yml
+  template:
+      src: elasticsearch.yml.j2
+      dest: /etc/elasticsearch/elasticsearch.yml
+  notify: restart_elastic
+
 - name: Start Elasticsearch
   service:
       name: elasticsearch
@@ -47,4 +53,3 @@
       name: prometheus-node-exporter
       state: started
   ignore_errors: true
-
