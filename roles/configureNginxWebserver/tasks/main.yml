@@ -1,7 +1,7 @@
 ---
 - name: Copy configuration files
-  copy:
-    src: file-server-nginx.conf
+  template:
+    src: file-server-nginx.conf.j2
     dest: /etc/nginx/conf.d/
 
 - name: Disable default site
