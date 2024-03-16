@@ -40,3 +40,10 @@
   roles:
     - role: installElastic
       tags: elk
+
+- name: Install daemontools and configure custom service
+  hosts: prometheus
+  become: true
+  roles:
+    - role: installDaemon
+      tags: daemon

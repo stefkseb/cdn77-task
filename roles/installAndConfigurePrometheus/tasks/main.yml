@@ -8,7 +8,6 @@
   apt:
     pkg: 
       - prometheus
-      - python3-requests
     state: present
 
 - name: Copy prometheus.yml

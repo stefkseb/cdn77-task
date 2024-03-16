@@ -1,0 +1,22 @@
+---
+- name: Update apt cache
+  apt:
+    cache_valid_time: 3600
+    update_cache: true
+
+- name: Install nginx and exporters
+  apt:
+    pkg:
+      - python3-requests
+      - daemontools
+
+- name: Create directory for the service
+  file:
+    path: /customService
+    state: directory
+    mode: '0755'
+
+- name: Copy script
+  copy:
+    src: statusChecker.py
+    dest: /customService/

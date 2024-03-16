@@ -2,7 +2,7 @@ proxy_cache_path  /tmp  levels=1:2    keys_zone=STATIC:10m
 inactive=24h  max_size=20m;
 
 upstream webserver1 {
-    server      {{ inventory_hostname }};
+    server      {{ groups["nginx_web"][0] }};
     keepalive   10;
 }
 
@@ -14,7 +14,7 @@ server {
     ssl_certificate_key fileserver.local-key.pem;
 
     location / {
-        proxy_pass             http://{{ inventory_hostname }};
+        proxy_pass             http://{{ groups["nginx_web"][0] }};
         proxy_set_header       Host $host;
         proxy_set_header       Connection "";
         proxy_http_version     1.1;
