@@ -6,7 +6,9 @@
 
 - name: Install prometheus
   apt:
-    pkg: prometheus
+    pkg: 
+      - prometheus
+      - python3-requests
     state: present
 
 - name: Copy prometheus.yml
@@ -19,5 +21,11 @@
 - name: Start Prometheus
   service:
       name: prometheus
+      state: started
+  ignore_errors: true
+
+- name: Start prometheus-node-exporter
+  service:
+      name: prometheus-node-exporter
       state: started
   ignore_errors: true
