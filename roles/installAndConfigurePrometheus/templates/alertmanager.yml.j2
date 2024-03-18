@@ -1,0 +1,12 @@
+route:
+  receiver: "mail"
+  repeat_interval: 1m
+  group_interval: 1m
+
+receivers: 
+  - name: "mail"
+    email_configs:
+    - to: testing_receiver@prometheus.testing.com
+      from: alerting@prometheus.testing.com
+      smarthost: smtp.freesmtpservers.com:25
+      require_tls: false

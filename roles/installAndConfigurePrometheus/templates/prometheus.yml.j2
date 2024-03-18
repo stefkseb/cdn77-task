@@ -9,7 +9,7 @@ global:
 alerting:
   alertmanagers:
   - static_configs:
-    - targets: ['{{ inventory_hostname }}:9093']
+    - targets: ['127.0.0.1:9093']
 
 
 # A scrape configuration containing exactly one endpoint to scrape:
@@ -32,3 +32,5 @@ scrape_configs:
     static_configs:
       - targets: [{% for host in groups['elastic'] %}'{{host}}:9100',{% endfor %}{% for host in groups['elastic'] %}'{{host}}:9114',{% endfor %}]
 
+rule_files:
+  - rules.yml

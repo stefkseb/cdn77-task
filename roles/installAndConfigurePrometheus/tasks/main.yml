@@ -4,10 +4,11 @@
     cache_valid_time: 3600
     update_cache: true
 
-- name: Install prometheus
+- name: Install prometheus and alertmanger
   apt:
     pkg: 
       - prometheus
+      - prometheus-alertmanager
     state: present
 
 - name: Copy prometheus.yml
@@ -17,9 +18,29 @@
     mode: 0644
   notify: restart_prometheus
 
+- name: Copy rules.yml
+  template:
+    src: rules.yml.j2
+    dest: /etc/prometheus/rules.yml
+    mode: 0644
+  notify: restart_prometheus
+
+- name: Copy alertmanager.yml
+  template:
+    src: alertmanager.yml.j2
+    dest: /etc/prometheus/alertmanager.yml
+    mode: 0644
+  notify: restart_prometheus
+
 - name: Start Prometheus
   service:
       name: prometheus
+      state: started
+  ignore_errors: true
+
+- name: Start Alertmaanger
+  service:
+      name: prometheus-alertmanager
       state: started
   ignore_errors: true
 

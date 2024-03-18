@@ -41,7 +41,7 @@
       "{{ item.ports }}"
     detach: true
   with_items:
-    - {name: prometheus, ip: "192.168.0.2", ports: ["9090:9090", "2202:22/tcp"]}
+    - {name: prometheus, ip: "192.168.0.2", ports: ["9090:9090", "9093:9093", "2202:22/tcp"]}
     - {name: nginx_webserver, ip: "192.168.0.3", ports: ["2203:22/tcp"]}
     - {name: nginx_rproxy, ip: "192.168.0.4", ports: ["2204:22/tcp", "80:80", "443:443"]}
 
