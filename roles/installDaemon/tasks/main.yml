@@ -4,19 +4,36 @@
     cache_valid_time: 3600
     update_cache: true
 
-- name: Install nginx and exporters
+- name: Install daemontools
   apt:
     pkg:
       - python3-requests
       - daemontools
+      - daemontools-run
 
 - name: Create directory for the service
   file:
-    path: /customService
+    path: /service/
     state: directory
-    mode: '0755'
+    mode: '1755'
 
-- name: Copy script
+- name: Copy python script
   copy:
     src: statusChecker.py
-    dest: /customService/
+    dest: /root/customService/
+
+- name: Copy run script
+  copy:
+    src: run
+    dest: /root/customService/
+    mode: '0755'
+
+- name: Link service to the /etc/service
+  file:
+    src: /root/customService/
+    dest: /etc/service/customService
+    state: link
+
+- name: Start svscanboot
+  shell: nohup svscanboot &
+  poll: 0
