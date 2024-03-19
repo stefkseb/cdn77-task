@@ -39,7 +39,7 @@ while True:
         for k,v in headers.items():
                 data_to_write["nginx"]["response_headers"][k] = v
                 
-        with open("/var/log/stats", "w") as f:
+        with open("/var/log/stats.json", "w") as f:
                 f.write(json.dumps(data_to_write, indent=4))
 
         time.sleep(10)

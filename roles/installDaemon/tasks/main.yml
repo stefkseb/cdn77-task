@@ -11,12 +11,6 @@
       - daemontools
       - daemontools-run
 
-- name: Create directory for the service
-  file:
-    path: /service/
-    state: directory
-    mode: '1755'
-
 - name: Copy python script
   copy:
     src: statusChecker.py
